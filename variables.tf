@@ -6,13 +6,13 @@ variable "name" {
 variable "tags" {
   description = "The list of the IDs of the Droplets assigned to the Firewall"
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "droplet_ids" {
   description = "The names of the Tags assigned to the Firewall"
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "inbound_rules" {
