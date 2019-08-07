@@ -8,8 +8,8 @@ terraform {
 
 resource "digitalocean_firewall" "fw" {
   name        = var.name
-  tags        = length(var.tags) ? var.tags : null
-  droplet_ids = length(var.droplet_ids) ? var.droplet_ids : null
+  tags        = length(var.tags) > 0 ? var.tags : null
+  droplet_ids = length(var.droplet_ids) > 0 ? var.droplet_ids : null
 
   dynamic "inbound_rule" {
     for_each = var.inbound_rules
