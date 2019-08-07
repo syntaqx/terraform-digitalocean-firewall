@@ -1,0 +1,39 @@
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    digitalocean = ">= 1.6"
+  }
+}
+
+resource "digitalocean_firewall" "fw" {
+  name        = var.name
+  tags        = var.tags
+  droplet_ids = var.droplet_ids
+
+  dynamic "inbound_rule" {
+    for_each = var.inbound_rules
+    iterator = r
+    content {
+      protocol                  = lookup(r.value, "protocol", null)
+      port_range                = lookup(r.value, "port_range", null)
+      source_addresses          = lookup(r.value, "source_addresses", null)
+      source_droplet_ids        = lookup(r.value, "source_droplet_ids", null)
+      source_tags               = lookup(r.value, "source_tags", null)
+      source_load_balancer_uids = lookup(r.value, "source_load_balancer_uids", null)
+    }
+  }
+
+  dynamic "outbound_rule" {
+    for_each = var.outbound_rules
+    iterator = r
+    content {
+      protocol                       = lookup(r.value, "protocol", null)
+      port_range                     = lookup(r.value, "port_range", null)
+      destination_addresses          = lookup(r.value, "destination_addresses", null)
+      destination_droplet_ids        = lookup(r.value, "destination_droplet_ids", null)
+      destination_tags               = lookup(r.value, "destination_tags", null)
+      destination_load_balancer_uids = lookup(r.value, "destination_load_balancer_uids", null)
+    }
+  }
+}
